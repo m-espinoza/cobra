@@ -1,0 +1,6 @@
+.env
+vendor
+phinx.php
+
+docker/mysql/*
+!docker/mysql/.gitkeep

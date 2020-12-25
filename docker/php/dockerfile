@@ -1,0 +1,26 @@
+FROM php:7.4-apache
+
+# System dependecies
+RUN  apt-get update -y && \
+     apt-get upgrade -y && \
+     apt-get install -y unzip \
+     libicu-dev \
+     libpq-dev \
+     zlib1g-dev \
+   	 libonig-dev \
+     libzip-dev
+
+# PHP dependencies
+RUN docker-php-ext-install \
+    intl \
+    mbstring \
+    pdo \
+    pdo_mysql \
+    mysqli \
+    zip
+
+# Uso la configuración de produccion de php
+#RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# Uso la configuración de desarrollo de php
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
