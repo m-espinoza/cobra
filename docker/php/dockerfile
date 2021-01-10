@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4
 
 # System dependecies
 RUN  apt-get update -y && \
@@ -8,7 +8,8 @@ RUN  apt-get update -y && \
      libpq-dev \
      zlib1g-dev \
    	 libonig-dev \
-     libzip-dev
+     libzip-dev \
+     acl
 
 # PHP dependencies
 RUN docker-php-ext-install \
@@ -17,10 +18,24 @@ RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
     mysqli \
-    zip
+    zip \
+    opcache \
+    pcntl
 
 # Uso la configuración de produccion de php
 #RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Uso la configuración de desarrollo de php
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+WORKDIR /var/www/html
+
+#RUN chmod -R 777 .
+#RUN chown www-data:www-data /var/www/html/
+
+#COMPOSER
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+#PUERTO
+EXPOSE 5673
