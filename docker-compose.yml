@@ -25,19 +25,20 @@ services:
     volumes:
       - ./public:/var/www/html
     command: composer create-project --prefer-dist cakephp/app:4.* violeta 
+    command: chmod -R 777 violeta
     command: violeta/bin/cake server -H 0.0.0.0 -p 5673
     links:
       - moradb
 
-  moraapi:
-    build: ./docker/python
-    ports:
-      - 7002:8000
-    #restart: always 
-    volumes:
-      - ./api:/home/api
-    links:
-      - moradb
+  #moraapi:
+  #  build: ./docker/python
+  #  ports:
+  #    - 7002:8000
+  #  #restart: always 
+  #  volumes:
+  #    - ./api:/home/api
+  #  links:
+  #    - moradb
 
 
 

@@ -294,11 +294,14 @@ return [
             'driver' => Mysql::class,
             'persistent' => false,
             'timezone' => 'UTC',
-            'host' => 'moradb',
-            'username' => 'root',
-            'password' => 'm17190',
-            'database' => 'violeta',
-            'encoding' => 'utf8mb4',
+            #'className' => 'Cake\Database\Connection',
+            #'driver' => 'Cake\Database\Driver\Mysql',
+            #'host' => 'moradb',
+            #'port' => '3306',
+            #'username' => 'root',
+            #'password' => 'm17190',
+            #'database' => 'violeta',
+            #'encoding' => 'utf8mb4',
 
             /*
              * For MariaDB/MySQL the internal default changed from utf8 to utf8mb4, aka full utf-8 support, in CakePHP 3.6
@@ -310,7 +313,7 @@ return [
              * then you MUST use the `flags` config to set your charset encoding.
              * For e.g. `'flags' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4']`
              */
-            'flags' => [],
+            'flags' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'],
             'cacheMetadata' => true,
             'log' => false,
 
@@ -347,6 +350,7 @@ return [
             'cacheMetadata' => true,
             'quoteIdentifiers' => false,
             'log' => false,
+
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
     ],
