@@ -25,6 +25,9 @@ services:
     volumes:
       - ./public:/var/www/html
     command: composer create-project --prefer-dist cakephp/app:4.* violeta 
+    command: cd violeta
+    command: composer require "cakephp/authentication:^2.0"
+    command: composer require "cakephp/authorization:^2.0"
     command: violeta/bin/cake server -H 0.0.0.0 -p 5673
     links:
       - moradb
