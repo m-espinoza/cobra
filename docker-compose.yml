@@ -18,22 +18,8 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
 
-  morasystem:
-    build: ./docker/php
-    ports:
-      - 7000:5673
-    volumes:
-      - ./public:/var/www/html
-    command: composer create-project --prefer-dist cakephp/app:4.* violeta 
-    command: cd violeta
-    command: composer require "cakephp/authentication:^2.0"
-    command: composer require "cakephp/authorization:^2.0"
-    command: violeta/bin/cake server -H 0.0.0.0 -p 5673
-    links:
-      - moradb
-
   moraapi:
-    build: ./docker/python
+    build: ./docker/moraapi
     ports:
       - 7002:8000
     #restart: always 
@@ -43,4 +29,14 @@ services:
       - moradb
 
 
-
+  morasystem:
+    #image: django
+    build: ./docker/morasystem
+    ports:
+      - 7000:80
+    #restart: always 
+    volumes:
+      - ./public:/home/morasystem
+    command: python ./mysite/manage.py runserver 0:80
+    links:
+      - moradb

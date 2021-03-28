@@ -1,6 +1,7 @@
 .env
 vendor
 phinx.php
-
+.pyc
+.sqlite3
 docker/mysql/*
 !docker/mysql/.gitkeep
