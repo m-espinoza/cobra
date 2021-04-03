@@ -4,5 +4,6 @@ phinx.php
 .sqlite3
 docker/mysql/*
 !docker/mysql/.gitkeep
-public/mysite/__pycache__
-public/mysite/polls/__pycache__
+public/mysite/__pycache__/*
+public/mysite/polls/__pycache__/*
+public/mysite/polls/migrations/__pycache__/*
