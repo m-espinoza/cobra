@@ -14,6 +14,7 @@ services:
       MYSQL_USER: ${USER}
       MYSQL_PASSWORD: ${PASSUSER}
       MYSQL_ROOT_PASSWORD: ${PASSROOT}
+      MYSQL_INITDB_SKIP_TZINFO: ${MYSQL_INITDB_SKIP_TZINFO}
     restart: always 
     volumes:
       - ./docker/mysql:/var/lib/mysql
@@ -30,13 +31,12 @@ services:
 
 
   morasystem:
-    #image: django
     build: ./docker/morasystem
     ports:
       - 7000:80
     #restart: always 
     volumes:
       - ./public:/home/morasystem
-    command: python ./mysite/manage.py runserver 0:80
+    command: python ./violeta/manage.py runserver 0:80
     links:
       - moradb
