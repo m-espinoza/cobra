@@ -37,6 +37,6 @@ services:
     #restart: always 
     volumes:
       - ./public:/home/morasystem
-    command: python ./violeta/manage.py runserver 0:80
+    command: python ./sistema_cobranza/manage.py runserver 0:80
     links:
       - moradb
