@@ -13,6 +13,7 @@ Imagenes Utilizadas:
 - agregar vistas en app
 - configurar urls en project y app
 - **python manage.py migrate** - Genera migración de tablas por defecto
+- Configuro INSTALLED_APPS en config.py para que la migracion tenga en cuenta a la app
 - Hacer el modelo
 - **python manage.py makemigrations polls** - Genero los archivos de migración
 - **python manage.py sqlmigrate polls 0001** - Reviso el sql generado
