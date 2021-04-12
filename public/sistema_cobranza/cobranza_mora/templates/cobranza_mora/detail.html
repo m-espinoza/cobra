@@ -1,0 +1,5 @@
+<h1>{{ lista.lista }}</h1>
+
+{% for Lista_cliente in lista.lista_cliente_set.all %}
+   <p>{{Lista_cliente.cliente_id}} {{Lista_cliente.lista_id}}</p>
+{% endfor %}

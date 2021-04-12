@@ -19,3 +19,5 @@ Imagenes Utilizadas:
 - **python manage.py sqlmigrate polls 0001** - Reviso el sql generado
 - **python manage.py migrate** - Aplico modelo
 - **python manage.py createsuperuser**
+- Toda la info de como hacer querys con el modelo: https://docs.djangoproject.com/es/3.2/ref/models/querysets/
+- Info sobre usuarios de django https://docs.djangoproject.com/en/3.2/topics/auth/default/#authentication-in-web-requests

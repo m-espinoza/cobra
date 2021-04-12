@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Inicio</title>
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
+
+</head>
+<body>  
+
+{% if request.user.is_authenticated %}
+    {% if latest_list %}
+        <table class="table table-bordered">
+        {% for lista in latest_list %}
+            <tr>
+                <td><a href="{% url 'cobranza_mora:detail' lista.id %}">{{ lista.lista }}</a></td>
+                <td>{{ lista.mora }}</td>
+                <td>{{ lista.empresa }}</td>
+                <td>{{ lista.fecha_inicio }}</td>
+                <td>{{ lista.fecha_vencimiento }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <p>No hay listas</p>
+    {% endif %}
+
+{% else %}
+<p>Usted no está autentificado</p>
+<a href="./login">Iniciar Seción</a>
+{% endif %}
+</body>
+</html>
