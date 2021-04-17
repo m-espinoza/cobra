@@ -12,11 +12,37 @@
 {% if request.user.is_authenticated %}
 
    <h1>{{ lista.lista }}</h1>
+   <table class="table table-bordered">
+      <thead>
+         <td>Empresa</td>
+         <td>Cliente</td>
+         <td>Cuenta</td>
+         <td>DNI</td>
+         <td>Deuda Mínima</td>
+         <td>Deuda Parcial</td>
+         <td>Deuda Total</td>
+         <td>Estado</td>
+         <td>Responsable</td>
+      </thead>
 
    {% for Lista_cliente in lista.lista_cliente_set.all %}
-      <p>{{Lista_cliente.cliente_id}} {{Lista_cliente.lista_id}}</p>
-   {% endfor %}
+      
+      <tr>
+         <td>{{ Lista_cliente.cliente.empresa }}</td>
+         <td>{{ Lista_cliente.cliente.nombre }}</td>
+         <td>{{ Lista_cliente.cliente.cuenta }}</td>
+         <td>{{ Lista_cliente.cliente.dni }}</td>
+         <td>{{ Lista_cliente.cliente.deuda_minima }}</td>
+         <td>{{ Lista_cliente.cliente.deuda_parcial }}</td>
+         <td>{{ Lista_cliente.cliente.deuda_total }}</td>
+         <td>{{ Lista_cliente.estado }}</td>
+         <td>{{ Lista_cliente.user }}</td>
+      </tr>
 
+   {% endfor %}
+   </table>
+
+   <a href="{% url 'cobranza_mora:index' %}">Volver</a>
 {% else %}
    <p>Usted no está autentificado</p>
    <a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>

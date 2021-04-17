@@ -3,10 +3,11 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from datetime import date  
 
-from .models import Lista, Lista_cliente
+from .models import Lista, Lista_cliente, Cliente, Empresa
 
 #def index(request):
     #return HttpResponse("Hello, world. You're at the polls index.")
@@ -20,8 +21,19 @@ class IndexView(generic.ListView):
         return Lista.objects.filter(
             fecha_inicio__lte = date.today(),
             fecha_vencimiento__gte = date.today()
-            ).exclude(estado_id=2)
+            ).exclude(
+                estado_id=2
+                )
 
 class DetailView(generic.DetailView):
     model = Lista
     template_name = 'cobranza_mora/detail.html'
+    #context_object_name = 'detalle_list'
+
+    """
+    def get_queryset(self):
+              
+        return Lista_cliente.objects.filter(
+            estado_id = 1            
+        )
+    """
