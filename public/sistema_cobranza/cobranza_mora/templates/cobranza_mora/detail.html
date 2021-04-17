@@ -1,5 +1,25 @@
-<h1>{{ lista.lista }}</h1>
+<html>
+<head>
+    <title>Lista</title>
 
-{% for Lista_cliente in lista.lista_cliente_set.all %}
-   <p>{{Lista_cliente.cliente_id}} {{Lista_cliente.lista_id}}</p>
-{% endfor %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
+
+</head>
+<body>  
+
+{% if request.user.is_authenticated %}
+
+   <h1>{{ lista.lista }}</h1>
+
+   {% for Lista_cliente in lista.lista_cliente_set.all %}
+      <p>{{Lista_cliente.cliente_id}} {{Lista_cliente.lista_id}}</p>
+   {% endfor %}
+
+{% else %}
+   <p>Usted no está autentificado</p>
+   <a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
+{% endif %}
+</body>
+</html>

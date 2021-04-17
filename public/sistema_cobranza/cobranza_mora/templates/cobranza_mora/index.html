@@ -28,7 +28,7 @@
 
 {% else %}
 <p>Usted no está autentificado</p>
-<a href="./login">Iniciar Seción</a>
+<a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
 {% endif %}
 </body>
 </html>
