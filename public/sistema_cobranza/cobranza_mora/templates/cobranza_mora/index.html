@@ -12,6 +12,13 @@
 {% if request.user.is_authenticated %}
     {% if latest_list %}
         <table class="table table-bordered">
+            <thead>
+                <td>Lista</td>
+                <td>Mora</td>
+                <td>Empresa</td>
+                <td>Fecha inicio</td>
+                <td>Fecha vencimiento</td>
+            </thead>
         {% for lista in latest_list %}
             <tr>
                 <td><a href="{% url 'cobranza_mora:detail' lista.id %}">{{ lista.lista }}</a></td>
