@@ -21,3 +21,4 @@ Imagenes Utilizadas:
 - **python manage.py createsuperuser**
 - Toda la info de como hacer querys con el modelo: https://docs.djangoproject.com/es/3.2/ref/models/querysets/
 - Info sobre usuarios de django https://docs.djangoproject.com/en/3.2/topics/auth/default/#authentication-in-web-requests
+- Tutorial de DJANGO en video: https://youtube.com/playlist?list=PLEsfXFp6DpzTD1BD1aWNxS2Ep06vIkaeW

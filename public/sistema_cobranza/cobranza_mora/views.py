@@ -4,12 +4,10 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.db.models import Count
-
-from datetime import date  
-
+#from django.db.models import Count
+from datetime import date
 from .models import Lista, Lista_cliente, Cliente, Empresa
-
+from .forms import EventoForm
 
 class IndexView(generic.ListView):
     template_name = 'cobranza_mora/index.html'
@@ -41,3 +39,12 @@ class DetailView(generic.DetailView):
             estado_id = 1            
         )
     """
+
+def evento_create_view(request):
+    form = EventoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+    context = {
+        'form':form
+    }
+    return render(request, "cobranza_mora/eventos.html", context)
