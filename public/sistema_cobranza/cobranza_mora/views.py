@@ -10,41 +10,41 @@ from .models import Lista, Lista_cliente, Cliente, Empresa
 from .forms import EventoForm
 
 class IndexView(generic.ListView):
-    template_name = 'cobranza_mora/index.html'
-    context_object_name = 'latest_list'
+	template_name = 'cobranza_mora/index.html'
+	context_object_name = 'latest_list'
 
-    def get_queryset(self):
-        """
-        Busco las listas que estan activas y 
-        los clientes que solo el usuario logueado puede ver
-        
-        """
+	def get_queryset(self):
+		"""
+		Busco las listas que estan activas y 
+		los clientes que solo el usuario logueado puede ver
+		
+		"""
 
-        return Lista.objects.filter(
-                fecha_inicio__lte = date.today(),
-                fecha_vencimiento__gte = date.today(),
-                lista_cliente__estado_id = 1,
-                lista_cliente__user_id = self.request.user.id
-            ).order_by('fecha_creado').distinct()
+		return Lista.objects.filter(
+				fecha_inicio__lte = date.today(),
+				fecha_vencimiento__gte = date.today(),
+				lista_cliente__estado_id = 1,
+				lista_cliente__user_id = self.request.user.id
+			).order_by('fecha_creado').distinct()
 
 class DetailView(generic.DetailView):
-    model = Lista
-    template_name = 'cobranza_mora/detail.html'
-    #context_object_name = 'detalle_list'
+	model = Lista
+	template_name = 'cobranza_mora/detail.html'
+	#context_object_name = 'detalle_list'
 
-    """
-    def get_queryset(self):
-              
-        return Lista_cliente.objects.filter(
-            estado_id = 1            
-        )
-    """
+	"""
+	def get_queryset(self):
+			  
+		return Lista_cliente.objects.filter(
+			estado_id = 1			
+		)
+	"""
 
 def evento_create_view(request):
-    form = EventoForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-    context = {
-        'form':form
-    }
-    return render(request, "cobranza_mora/eventos.html", context)
+	form = EventoForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+	context = {
+		'form':form
+	}
+	return render(request, "cobranza_mora/eventos.html", context)

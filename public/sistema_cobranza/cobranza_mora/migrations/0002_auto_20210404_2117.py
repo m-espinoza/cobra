@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('cobranza_mora', '0001_initial'),
-    ]
+	dependencies = [
+		('cobranza_mora', '0001_initial'),
+	]
 
-    operations = [
-        migrations.AlterField(
-            model_name='evento',
-            name='fecha_evento',
-            field=models.DateTimeField(auto_now_add=True),
-        ),
-        migrations.AlterField(
-            model_name='lista',
-            name='fecha_creado',
-            field=models.DateTimeField(auto_now_add=True),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name='evento',
+			name='fecha_evento',
+			field=models.DateTimeField(auto_now_add=True),
+		),
+		migrations.AlterField(
+			model_name='lista',
+			name='fecha_creado',
+			field=models.DateTimeField(auto_now_add=True),
+		),
+	]
