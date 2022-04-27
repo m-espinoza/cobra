@@ -5,8 +5,6 @@ RUN apt-get update && \
 
 ENV TZ = America/Argentina/Mendoza
 
-RUN mkdir -p /home/mora_sistem
-
 WORKDIR /home/mora_system
 
 EXPOSE 80
