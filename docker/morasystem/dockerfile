@@ -1,17 +1,16 @@
-FROM python:3.8-alpine
+FROM python:3.9-slim
 
-RUN mkdir -p /home/morasistem
+RUN apt-get update && \
+    apt-get install python3-dev default-libmysqlclient-dev gcc -y
 
-WORKDIR /home/morasystem
+ENV TZ = America/Argentina/Mendoza
+
+RUN mkdir -p /home/mora_sistem
+
+WORKDIR /home/mora_system
 
 EXPOSE 80
 
 COPY ./requirements.txt .
 
-RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache mariadb-dev
-
 RUN pip install --no-cache-dir -r requirements.txt
-
-RUN apk del build-deps

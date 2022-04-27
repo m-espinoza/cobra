@@ -1,11 +1,11 @@
-version: '2.0'
+version: '3'
 
 services:
 
-  moradb:
+  mora_db:
     env_file:
       - ./.env
-    image: mariadb
+    image: mariadb:10.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - 7001:3306
@@ -14,29 +14,30 @@ services:
       MYSQL_USER: ${USER}
       MYSQL_PASSWORD: ${PASSUSER}
       MYSQL_ROOT_PASSWORD: ${PASSROOT}
-      MYSQL_INITDB_SKIP_TZINFO: ${MYSQL_INITDB_SKIP_TZINFO}
+      MYSQL_INITDB_SKIP_TZINFO: "true"
+      TZ: "America/Argentina/Mendoza"
     restart: always 
     volumes:
       - ./docker/mysql:/var/lib/mysql
 
-  moraapi:
-    build: ./docker/moraapi
-    ports:
-      - 7002:8000
-    #restart: always 
-    volumes:
-      - ./api:/home/api
-    links:
-      - moradb
+#  moraapi:
+#    build: ./docker/moraapi
+#    ports:
+#      - 7002:8000
+#    #restart: always 
+#    volumes:
+#      - ./api:/home/api
+#    links:
+#      - moradb
 
 
-  morasystem:
+  mora_system:
     build: ./docker/morasystem
     ports:
       - 7000:80
     #restart: always 
     volumes:
-      - ./public:/home/morasystem
-    command: python ./sistema_cobranza/manage.py runserver 0:80
+      - ./public:/home/mora_system
+    command: sh -c "python /home/mora_system/sistema_cobranza/manage.py runserver 0:80"
     links:
-      - moradb
+      - mora_db

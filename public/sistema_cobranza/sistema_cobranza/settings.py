@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'sistema_cobranza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_cobranza',
+        'NAME': 'cobranza',
         'USER': 'root',
         'PASSWORD': 'm17190',
-        'HOST': 'moradb'
+        'HOST': 'mora_db'
     }
 }
 
