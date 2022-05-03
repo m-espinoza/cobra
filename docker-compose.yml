@@ -2,23 +2,35 @@ version: '3'
 
 services:
 
-  mora_db:
+  cobra_db:
     env_file:
       - ./.env
-    image: mariadb:10.7
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:${POSTGRES_VERSION}
     ports:
-      - 7001:3306
+      - ${DB_PORT}:5432
     environment:
-      MYSQL_DATABASE: ${DATABASE}
-      MYSQL_USER: ${USER}
-      MYSQL_PASSWORD: ${PASSUSER}
-      MYSQL_ROOT_PASSWORD: ${PASSROOT}
-      MYSQL_INITDB_SKIP_TZINFO: "true"
-      TZ: "America/Argentina/Mendoza"
+      POSTGRES_PASSWORD: ${PASS}
+      POSTGRES_DB: ${DATABASE}
+      TZ: ${TZ}
+      PGTZ: ${TZ}
     restart: always 
     volumes:
-      - ./docker/mysql:/var/lib/mysql
+      - cobra-data:/var/lib/postgresql/data
+
+
+  cobra_system:
+    build: ./docker/cobra_system
+    env_file:
+      - ./.env
+    ports:
+      - ${SYSTEM_PORT}:80
+    volumes:
+      - ./public:/home/cobra_system
+    command: sh -c "python /home/cobra_system/sistema_cobranza/manage.py runserver 0:80"
+    links:
+      - cobra_db
+    depends_on:
+      - cobra_db
 
 #  moraapi:
 #    build: ./docker/moraapi
@@ -30,13 +42,5 @@ services:
 #    links:
 #      - moradb
 
-
-  mora_system:
-    build: ./docker/morasystem
-    ports:
-      - 7000:80
-    volumes:
-      - ./public:/home/mora_system
-    command: sh -c "python /home/mora_system/sistema_cobranza/manage.py runserver 0:80"
-    links:
-      - mora_db
+volumes:
+  cobra-data:

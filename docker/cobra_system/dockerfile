@@ -1,11 +1,11 @@
 FROM python:3.9-slim
 
 RUN apt-get update && \
-	apt-get install python3-dev default-libmysqlclient-dev gcc -y
+	apt-get install libpq-dev gcc -y
 
 ENV TZ = America/Argentina/Mendoza
 
-WORKDIR /home/mora_system
+WORKDIR /home/cobra_system
 
 EXPOSE 80
 

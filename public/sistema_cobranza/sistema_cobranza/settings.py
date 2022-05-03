@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,11 +77,11 @@ WSGI_APPLICATION = 'sistema_cobranza.wsgi.application'
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'cobranza',
-		'USER': 'root',
-		'PASSWORD': 'm17190',
-		'HOST': 'mora_db'
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': os.environ['DATABASE'],
+		'USER': os.environ['USER'],
+		'PASSWORD': os.environ['PASS'],
+		'HOST': os.environ['HOST']
 	}
 }
 
@@ -109,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-AR'
 
-TIME_ZONE = 'America/Argentina/Buenos_Aires'
+TIME_ZONE = 'America/Argentina/Mendoza'
 
 USE_I18N = True
 
@@ -124,3 +125,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'cobranza_mora:index'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

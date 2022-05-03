@@ -1,4 +1,3 @@
 django==3.2.13
 virtualenv
-pymysql
-mysqlclient
+psycopg2
