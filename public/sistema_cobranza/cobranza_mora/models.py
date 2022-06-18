@@ -47,14 +47,6 @@ class Direccion(models.Model):
 	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
 	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
 
-class Link_cliente(models.Model):
-	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-	
-	fecha_vencimiento = models.DateField()
-	link = models.URLField()
-	def __str__(self):
-		return self.cliente
-	
 class Mora(models.Model):
 	mora = models.CharField(max_length=140)
 
@@ -116,7 +108,6 @@ class Telefono_tipo(models.Model):
 	def __str__(self):
 		return self.telefono_tipo
 
-
 class Telefono(models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 	estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
@@ -137,6 +128,6 @@ class Evento_telefono(models.Model):
 	evento_respuesta = models.ForeignKey(Evento_respuesta, on_delete=models.CASCADE)
 
 	mensaje = models.CharField(max_length=255, null=True, blank=True)
-	
+
 	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
 	fecha_modificado = models.DateTimeField(auto_now=True, null=True)

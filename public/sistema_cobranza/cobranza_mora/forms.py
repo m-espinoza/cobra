@@ -7,5 +7,6 @@ class EventoForm(ModelForm):
 		fields = [
 			'evento_tipo',
 			'evento_respuesta',
-			'mensaje'
+			'mensaje',
+			'telefono'
 		]
