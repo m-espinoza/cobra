@@ -11,23 +11,8 @@ class Empresa(models.Model):
 	def __str__(self):
 		return self.empresa
 
-class Direccion(models.Model):
-	numero = models.IntegerField(null=True, blank=True)	
-	calle = models.CharField(max_length=140, null=True, blank=True)
-	casa = models.CharField(max_length=14, null=True, blank=True)
-	manzana = models.CharField(max_length=14, null=True, blank=True)
-	barrio = models.CharField(max_length=140,null=True, blank=True)
-	piso = models.CharField(max_length=14, null=True, blank=True)
-	depto = models.CharField(max_length=14, null=True, blank=True)
-	localidad = models.CharField(max_length=140, null=True, blank=True)
-	departamento = models.CharField(max_length=140, null=True, blank=True)
-	provincia = models.CharField(max_length=140, null=True, blank=True)
-	pais = models.CharField(max_length=140, null=True, blank=True)
-	ubicacion = models.CharField(max_length=255, null=True, blank=True)
-
 class Cliente(models.Model):
 	empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-	direccion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
 
 	cuenta = models.IntegerField()
 	dni = models.IntegerField()
@@ -41,7 +26,22 @@ class Cliente(models.Model):
 
 	def __str__(self):
 		return self.nombre
-	
+
+class Direccion(models.Model):
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+
+	numero = models.IntegerField(null=True, blank=True)	
+	calle = models.CharField(max_length=140, null=True, blank=True)
+	casa = models.CharField(max_length=14, null=True, blank=True)
+	manzana = models.CharField(max_length=14, null=True, blank=True)
+	barrio = models.CharField(max_length=140,null=True, blank=True)
+	piso = models.CharField(max_length=14, null=True, blank=True)
+	depto = models.CharField(max_length=14, null=True, blank=True)
+	localidad = models.CharField(max_length=140, null=True, blank=True)
+	departamento = models.CharField(max_length=140, null=True, blank=True)
+	provincia = models.CharField(max_length=140, null=True, blank=True)
+	pais = models.CharField(max_length=140, null=True, blank=True)
+	detalle = models.CharField(max_length=255, null=True, blank=True)	
 
 class Link_cliente(models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
