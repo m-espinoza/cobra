@@ -1,11 +1,10 @@
-from .models import Evento
+from .models import Evento_telefono
 from django.forms import ModelForm
 
 class EventoForm(ModelForm):
 	class Meta:
-		model = Evento
+		model = Evento_telefono
 		fields = [
-			'cliente',
 			'evento_tipo',
 			'evento_respuesta',
 			'mensaje'

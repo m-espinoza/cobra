@@ -17,12 +17,13 @@ class Cliente(models.Model):
 	cuenta = models.IntegerField()
 	dni = models.IntegerField()
 	nombre = models.CharField(max_length=200)
-	telefono_celular = models.CharField(max_length=15, null=True, blank=True)
-	telefono_fijo = models.CharField(max_length=15, null=True, blank=True)
 	correo = models.EmailField(max_length=140, null=True, blank=True)
 	deuda_minima = models.FloatField(null=True, blank=True)
 	deuda_parcial = models.FloatField(null=True, blank=True)
 	deuda_total = models.FloatField(null=True, blank=True)
+
+	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
+	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self):
 		return self.nombre
@@ -41,7 +42,10 @@ class Direccion(models.Model):
 	departamento = models.CharField(max_length=140, null=True, blank=True)
 	provincia = models.CharField(max_length=140, null=True, blank=True)
 	pais = models.CharField(max_length=140, null=True, blank=True)
-	detalle = models.CharField(max_length=255, null=True, blank=True)	
+	detalle = models.CharField(max_length=255, null=True, blank=True)
+
+	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
+	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
 
 class Link_cliente(models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -98,16 +102,6 @@ class Evento_respuesta(models.Model):
 	def __str__(self):
 		return self.evento_respuesta
 
-class Evento(models.Model):
-	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-	evento_tipo = models.ForeignKey(Evento_tipo, on_delete=models.CASCADE)
-	evento_respuesta = models.ForeignKey(Evento_respuesta, on_delete=models.CASCADE)
-
-	mensaje = models.CharField(max_length=255, null=True, blank=True)
-	fecha_creado = models.DateTimeField(auto_now_add=True)
-
-
-
 class Evento_pendiente(models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 	
@@ -115,3 +109,34 @@ class Evento_pendiente(models.Model):
 
 	def __str__(self):
 		return self.cliente
+
+class Telefono_tipo(models.Model):
+	telefono_tipo = models.CharField(max_length=140)
+
+	def __str__(self):
+		return self.telefono_tipo
+
+
+class Telefono(models.Model):
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+	estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+	telefono_tipo = models.ForeignKey(Telefono_tipo, on_delete=models.CASCADE)
+
+	telefono = models.CharField(max_length=20)
+
+	fecha_creado = models.DateTimeField(auto_now_add=True)
+	fecha_modificado = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return self.telefono
+
+class Evento_telefono(models.Model):
+	telefono = models.ForeignKey(Telefono, on_delete=models.CASCADE)
+
+	evento_tipo = models.ForeignKey(Evento_tipo, on_delete=models.CASCADE)
+	evento_respuesta = models.ForeignKey(Evento_respuesta, on_delete=models.CASCADE)
+
+	mensaje = models.CharField(max_length=255, null=True, blank=True)
+	
+	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
+	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
