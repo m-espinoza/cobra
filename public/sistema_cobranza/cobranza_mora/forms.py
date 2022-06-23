@@ -1,12 +1,13 @@
-from .models import Evento_telefono
-from django.forms import ModelForm
+from faulthandler import disable
+from django.forms import ModelForm, Textarea
+from .models import Evento
 
 class EventoForm(ModelForm):
 	class Meta:
-		model = Evento_telefono
-		fields = [
-			'evento_tipo',
-			'evento_respuesta',
-			'mensaje',
-			'telefono'
-		]
+		model = Evento
+		fields = '__all__'
+		widgets = {
+			'mensaje': Textarea(attrs={'cols': 20, 'rows': 5})
+		}
+
+		

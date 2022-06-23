@@ -1,10 +1,11 @@
 <html>
 <head>
 	<title>Inicio</title>
-
+<h1>COBRA System</h1>
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
+<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
 
 </head>
 <body>  
@@ -21,7 +22,7 @@
 			</thead>
 		{% for lista in latest_list %}
 			<tr>
-				<td><a href="{% url 'cobranza_mora:detail' lista.id %}">{{ lista.lista }}</a></td>
+				<td><a href="{% url 'cobranza_mora:lista' lista.id %}">{{ lista.lista }}</a></td>
 				<td>{{ lista.mora }}</td>
 				<td>{{ lista.empresa }}</td>
 				<td>{{ lista.fecha_inicio }}</td>

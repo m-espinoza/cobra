@@ -12,7 +12,7 @@ class Empresa(models.Model):
 		return self.empresa
 
 class Cliente(models.Model):
-	empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+	empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
 
 	cuenta = models.IntegerField()
 	dni = models.IntegerField()
@@ -60,9 +60,9 @@ class Estado(models.Model):
 		return self.estado
 
 class Lista(models.Model):
-	empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-	mora = models.ForeignKey(Mora, on_delete=models.CASCADE)
-	estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+	empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
+	mora = models.ForeignKey(Mora, on_delete=models.CASCADE, null=True)
+	estado = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True)
 
 	lista = models.CharField(max_length=140)
 	fecha_inicio = models.DateField()
@@ -73,9 +73,9 @@ class Lista(models.Model):
 		return self.lista
 
 class Lista_cliente(models.Model):
-	lista = models.ForeignKey(Lista, on_delete=models.CASCADE)
-	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-	estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+	lista = models.ForeignKey(Lista, on_delete=models.CASCADE, null=True)
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+	estado = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True)
 	user = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
 		on_delete=models.SET(get_sentinel_user),
@@ -95,7 +95,7 @@ class Evento_respuesta(models.Model):
 		return self.evento_respuesta
 
 class Evento_pendiente(models.Model):
-	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
 	
 	fecha_vencimiento = models.DateField()
 
@@ -109,23 +109,23 @@ class Telefono_tipo(models.Model):
 		return self.telefono_tipo
 
 class Telefono(models.Model):
-	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-	estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-	telefono_tipo = models.ForeignKey(Telefono_tipo, on_delete=models.CASCADE)
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+	estado = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True)
+	telefono_tipo = models.ForeignKey(Telefono_tipo, on_delete=models.CASCADE, null=True)
 
-	telefono = models.CharField(max_length=20)
+	telefono = models.CharField(max_length=20, null=True)
 
-	fecha_creado = models.DateTimeField(auto_now_add=True)
-	fecha_modificado = models.DateTimeField(auto_now=True)
+	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
+	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self):
 		return self.telefono
 
-class Evento_telefono(models.Model):
-	telefono = models.ForeignKey(Telefono, on_delete=models.CASCADE)
-
-	evento_tipo = models.ForeignKey(Evento_tipo, on_delete=models.CASCADE)
-	evento_respuesta = models.ForeignKey(Evento_respuesta, on_delete=models.CASCADE)
+class Evento(models.Model):
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+	evento_tipo = models.ForeignKey(Evento_tipo, on_delete=models.CASCADE, null=True)
+	evento_respuesta = models.ForeignKey(Evento_respuesta, on_delete=models.CASCADE, null=True)
+	telefono = models.ForeignKey(Telefono, on_delete=models.CASCADE, null=True)
 
 	mensaje = models.CharField(max_length=255, null=True, blank=True)
 

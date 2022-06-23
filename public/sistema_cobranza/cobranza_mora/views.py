@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 #from django.db.models import Count
 from datetime import date
-from .models import Lista, Lista_cliente, Cliente, Empresa
+from .models import Lista, Lista_cliente, Cliente, Empresa, Telefono
 from .forms import EventoForm
 
 class IndexView(generic.ListView):
@@ -27,9 +27,9 @@ class IndexView(generic.ListView):
 				lista_cliente__user_id = self.request.user.id
 			).order_by('fecha_creado').distinct()
 
-class DetailView(generic.DetailView):
+class ListaView(generic.DetailView):
 	model = Lista
-	template_name = 'cobranza_mora/detail.html'
+	template_name = 'cobranza_mora/lista.html'
 	#context_object_name = 'detalle_list'
 
 	"""
@@ -40,11 +40,25 @@ class DetailView(generic.DetailView):
 		)
 	"""
 
-def evento_create_view(request):
-	form = EventoForm(request.POST or None)
-	if form.is_valid():
-		form.save()
-	context = {
-		'form':form
+def evento_create_view(request, id_cliente):
+	""" basado en el get me fijo si el cliente existe y habilito el formulario con el cliente seteado"""
+	
+	cliente = get_object_or_404(Cliente, pk=id_cliente)
+	telefonos = get_object_or_404(Telefono, cliente=id_cliente)
+
+	initial_dict = {
+		"cliente" : cliente,
+		"telefono" : telefonos
 	}
+
+	form_event = EventoForm(request.POST or None, initial = initial_dict)
+
+	if form_event.is_valid():
+		form_event.save()
+
+	context = {
+		'form_event':form_event
+	}
+
 	return render(request, "cobranza_mora/eventos.html", context)
+	

@@ -8,7 +8,8 @@
 - Generar el archivo **.env** basandose en **.env.example**
 - Ejecutas **docker-compose up --build**
 - Postgresql [demora en genrar la db ](https://github.com/docker-library/docs/blob/master/postgres/README.md#caveats) lo que hace que cuando django quiera conectarse no la va a encontrar, debes hacer un restart al contenedor **cobra_system** para que se conecte a la db ya creada.
-- Luego entrar en **cobra_system** y ejecutar **python ./sistema_cobranza/manage.py migrate** para generar las tablas en la db 
+- Luego entrar en **cobra_system** y ejecutar **python ./sistema_cobranza/manage.py migrate** para generar las tablas en la db
+- Crear admin **python manage.py createsuperuser**
 
 ## Mini tutorial de DJANGO para generar un proyecto nuevo
 - **django-admin startproject mysite** - Generar carpeta de proyecto
