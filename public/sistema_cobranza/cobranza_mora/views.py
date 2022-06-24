@@ -1,12 +1,12 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-#from django.db.models import Count
+#from django.contrib import messages
 from datetime import date
-from .models import Lista, Lista_cliente, Cliente, Empresa, Telefono
+from .models import *
 from .forms import EventoForm
 
 class IndexView(generic.ListView):
@@ -44,20 +44,26 @@ def evento_create_view(request, id_cliente):
 	""" basado en el get me fijo si el cliente existe y habilito el formulario con el cliente seteado"""
 	
 	cliente = get_object_or_404(Cliente, pk=id_cliente)
-	telefonos = get_object_or_404(Telefono, cliente=id_cliente)
+	
+	telefono_habilitado = Telefono.objects.filter(estado_id = 1)
+	telefonos = get_list_or_404(telefono_habilitado, cliente=id_cliente)
+	
 
 	initial_dict = {
 		"cliente" : cliente,
-		"telefono" : telefonos
+		#"telefono" : telefonos
 	}
 
 	form_event = EventoForm(request.POST or None, initial = initial_dict)
 
 	if form_event.is_valid():
 		form_event.save()
+		#messages.success(request, 'Successfully saved')
 
 	context = {
-		'form_event':form_event
+		'title' : "Cargar Evento",
+		'form_event' : form_event,
+		'telefonos': telefonos
 	}
 
 	return render(request, "cobranza_mora/eventos.html", context)
