@@ -50,8 +50,7 @@ def evento_create_view(request, id_cliente):
 	
 
 	initial_dict = {
-		"cliente" : cliente,
-		#"telefono" : telefonos
+		"cliente" : cliente
 	}
 
 	form_event = EventoForm(request.POST or None, initial = initial_dict)

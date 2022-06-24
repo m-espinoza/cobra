@@ -12,15 +12,15 @@
 <br>
 <form name="form_event" method="POST"> 
 {% csrf_token %}
-Telefonos: <select id="telefono">
-	{% for t in telefonos %}
-	<option value="{{ t.telefono }}">{{ t.telefono_tipo }} - {{ t.telefono }}</option>
-	{% endfor %}
-</select>
-<br><br>
+
 {{ field.errors }}
 {{ form_event.as_p }}
-
+<p><label for="id_telefono">Telefonos: </label><select name="telefono" id="id_telefono">
+	{% for t in telefonos %}
+	<option value="{{ t.pk }}">{{ t.telefono_tipo }} - {{ t.telefono }}</option>
+	{% endfor %}
+</select></p>
+<br><br>
 
 <br>
 <input type="submit" value="Guardar" class="btn btn-primary">
