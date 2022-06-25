@@ -11,4 +11,5 @@ urlpatterns = [
 	path('logout/', LogoutView.as_view(template_name='cobranza_mora/logout.html'), name='logout'),
 	path('lista/<int:pk>/', views.ListaView.as_view(), name='lista'),
 	path('evento/<int:id_cliente>', views.evento_create_view, name='evento'),
+	path('lista_evento/<int:id_cliente>', views.evento_list_view, name='lista_eventos'),
 ]

@@ -10,11 +10,13 @@ class EventoForm(ModelForm):
 			'evento_tipo',
 			'evento_respuesta',
 			'mensaje',
-			'telefono'
+			'telefono',
+			'user'
 		]
 
 		widgets = {
 			'mensaje': Textarea(attrs={'cols': 20, 'rows': 5}),
 			'cliente': HiddenInput(),
-			'telefono': HiddenInput()
+			'telefono': HiddenInput(),
+			'user': HiddenInput()
 		}

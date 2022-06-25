@@ -43,6 +43,8 @@ class ListaView(generic.DetailView):
 def evento_create_view(request, id_cliente):
 	""" basado en el get me fijo si el cliente existe y habilito el formulario con el cliente seteado"""
 	
+	template_name = 'cobranza_mora/eventos.html'
+
 	cliente = get_object_or_404(Cliente, pk=id_cliente)
 	
 	telefono_habilitado = Telefono.objects.filter(estado_id = 1)
@@ -50,7 +52,8 @@ def evento_create_view(request, id_cliente):
 	
 
 	initial_dict = {
-		"cliente" : cliente
+		"cliente" : cliente,
+		'user' : request.user
 	}
 
 	form_event = EventoForm(request.POST or None, initial = initial_dict)
@@ -65,5 +68,22 @@ def evento_create_view(request, id_cliente):
 		'telefonos': telefonos
 	}
 
-	return render(request, "cobranza_mora/eventos.html", context)
+	return render(request, template_name, context)
+
+
+def evento_list_view(request, id_cliente):
+
+	template_name = 'cobranza_mora/lista_eventos.html'
+
+	cliente = get_object_or_404(Cliente, pk=id_cliente)
+
+	lista = Evento.objects.filter(
+			cliente_id = id_cliente
+		).order_by('-fecha_creado')
 	
+	context = {
+		'title' : cliente.nombre + " DNI: " + str(cliente.dni),
+		'lista_eventos' : lista
+	}
+
+	return render(request, template_name, context)

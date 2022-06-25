@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
 	<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
 	</head>
-	<body>
+	<body class="container">
 {% block content%}
 <h1>{{ title }}</h1>
 <br>
@@ -15,16 +15,20 @@
 
 {{ field.errors }}
 {{ form_event.as_p }}
-<p><label for="id_telefono">Telefonos: </label><select name="telefono" id="id_telefono">
+<p>
+	<label for="id_telefono">Telefonos: </label>
+	<select name="telefono" id="id_telefono">
 	{% for t in telefonos %}
-	<option value="{{ t.pk }}">{{ t.telefono_tipo }} - {{ t.telefono }}</option>
+		<option value="{{ t.pk }}">{{ t.telefono_tipo }} - {{ t.telefono }}</option>
 	{% endfor %}
-</select></p>
-<br><br>
-
+	</select>
+</p>
+<br>
 <br>
 <input type="submit" value="Guardar" class="btn btn-primary">
 </form>
+
+
 </body>
 <!-- <script>
 	$(document).ready(function(){

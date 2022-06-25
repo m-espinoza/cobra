@@ -129,5 +129,12 @@ class Evento(models.Model):
 
 	mensaje = models.CharField(max_length=255, null=True, blank=True)
 
+	user = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete=models.SET(get_sentinel_user),
+		limit_choices_to={'is_staff': True},
+		null=True
+	)
+
 	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
 	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
