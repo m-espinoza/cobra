@@ -2,3 +2,5 @@ django==3.2.13
 virtualenv
 psycopg2
 djangorestframework==3.13.1
+markdown
+django-filter
