@@ -19,10 +19,17 @@ from cobranza_mora import views
 
 from rest_framework import routers
 
-
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'empresa', views.EmpresaViewSet)
+router.register(r'cliente', views.ClienteViewSet)
+router.register(r'mora', views.MoraViewSet)
+router.register(r'estado', views.EstadoViewSet)
+router.register(r'lista', views.ListaViewSet)
+router.register(r'lista_cliente', views.Lista_clienteViewSet)
+router.register(r'telefono_tipo', views.Telefono_tipoViewSet)
+router.register(r'telefono', views.TelefonoViewSet)
 
 
 

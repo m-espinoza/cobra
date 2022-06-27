@@ -9,8 +9,7 @@ from datetime import date
 from .models import *
 from .forms import EventoForm
 
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions
 from .serializers import *
 
 class IndexView(generic.ListView):
@@ -99,7 +98,7 @@ class UserViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = User.objects.all().order_by('-date_joined')
 	serializer_class = UserSerializer
-	permission_classes = [permissions.IsAuthenticated]
+	permission_classes = [permissions.IsAdminUser]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -108,4 +107,60 @@ class GroupViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Group.objects.all()
 	serializer_class = GroupSerializer
-	permission_classes = [permissions.IsAuthenticated]
+	permission_classes = [permissions.IsAdminUser]
+
+
+class EmpresaViewSet(viewsets.ModelViewSet):
+	
+	queryset = Empresa.objects.all()
+	serializer_class = EmpresaSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class ClienteViewSet(viewsets.ModelViewSet):
+	
+	queryset = Cliente.objects.all()
+	serializer_class = ClienteSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class MoraViewSet(viewsets.ModelViewSet):
+
+	queryset = Mora.objects.all()
+	serializer_class = MoraSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class EstadoViewSet(viewsets.ModelViewSet):
+
+	queryset = Estado.objects.all()
+	serializer_class = EstadoSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class ListaViewSet(viewsets.ModelViewSet):
+
+	queryset = Lista.objects.all()
+	serializer_class = ListaSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class Lista_clienteViewSet(viewsets.ModelViewSet):
+
+	queryset = Lista_cliente.objects.all()
+	serializer_class = Lista_clienteSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class Telefono_tipoViewSet(viewsets.ModelViewSet):
+
+	queryset = Telefono_tipo.objects.all()
+	serializer_class = Telefono_tipoSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class TelefonoViewSet(viewsets.ModelViewSet):
+
+	queryset = Telefono.objects.all()
+	serializer_class = TelefonoSerializer
+	permission_classes = [permissions.IsAdminUser]

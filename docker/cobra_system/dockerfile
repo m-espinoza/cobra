@@ -8,7 +8,6 @@ ENV TZ = America/Argentina/Mendoza
 WORKDIR /home/cobra_system
 
 EXPOSE 80
-EXPOSE 8000
 
 COPY ./requirements.txt .
 

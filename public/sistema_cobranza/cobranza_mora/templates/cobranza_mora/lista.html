@@ -48,8 +48,8 @@
 	  {% endif %}
    {% endfor %}
    </table>
-
-   <a href="{% url 'cobranza_mora:index' %}">Volver</a>
+   <br><br>
+   <a href="{% url 'cobranza_mora:index' %}" class="btn btn-primary">Volver</a>
 {% else %}
    <p>Usted no está autentificado</p>
    <a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
