@@ -67,7 +67,9 @@ class Lista(models.Model):
 	lista = models.CharField(max_length=140)
 	fecha_inicio = models.DateField()
 	fecha_vencimiento = models.DateField()
-	fecha_creado = models.DateTimeField(auto_now_add=True)
+
+	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
+	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self):
 		return self.lista
@@ -79,7 +81,8 @@ class Lista_cliente(models.Model):
 	user = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
 		on_delete=models.SET(get_sentinel_user),
-		limit_choices_to={'is_staff': True},
+		limit_choices_to={'is_active': True},
+		null=True,
 	)
 
 class Evento_tipo(models.Model):
@@ -132,7 +135,7 @@ class Evento(models.Model):
 	user = models.ForeignKey(
 		settings.AUTH_USER_MODEL,
 		on_delete=models.SET(get_sentinel_user),
-		limit_choices_to={'is_staff': True},
+		limit_choices_to={'is_active': True},
 		null=True
 	)
 
