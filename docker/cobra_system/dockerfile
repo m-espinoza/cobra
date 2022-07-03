@@ -5,10 +5,15 @@ RUN apt-get update && \
 
 ENV TZ = America/Argentina/Mendoza
 
-WORKDIR /home/cobra_system
+WORKDIR /home/sistema_cobranza
 
-EXPOSE 80
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
+#EXPOSE 80
+
+# Dependencias
+RUN pip install --upgrade pip
 COPY ./requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt

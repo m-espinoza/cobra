@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+  cobra_system:
+    build: ./docker/cobra_system
+    env_file:
+      - ./.env
+    expose:
+      - ${SYSTEM_PORT}
+    volumes:
+      - ./public/sistema_cobranza:/home/sistema_cobranza
+    command: gunicorn --bind 0.0.0.0:${SYSTEM_PORT} sistema_cobranza.wsgi
+    #sh -c "python ./manage.py runserver 0:${SYSTEM_PORT}"
+    depends_on:
+      - cobra_db
+    networks:
+      - cobra-red
+    
+
+  cobra_db:
+    env_file:
+      - ./.env
+    image: postgres:${POSTGRES_VERSION}
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_PASSWORD: ${PASS}
+      POSTGRES_DB: ${DATABASE}
+      TZ: ${TZ}
+      PGTZ: ${TZ}
+    restart: always 
+    volumes:
+      - cobra-data:/var/lib/postgresql/data
+    networks:
+      - cobra-red
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./public/sistema_cobranza/staticfiles:/home/sistema_cobranza/staticfiles
+    depends_on:
+      - cobra_system
+    networks:
+      - cobra-red
+
+
+networks:
+    cobra-red:
+        driver: bridge
+
+volumes:
+  cobra-data:

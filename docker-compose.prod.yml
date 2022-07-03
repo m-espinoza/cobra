@@ -6,11 +6,13 @@ services:
     build: ./docker/cobra_system
     env_file:
       - ./.env
-    ports:
-      - ${SYSTEM_PORT}:80
+    expose:
+      - ${SYSTEM_PORT}
     volumes:
-      - ./public:/home/cobra_system
-    command: sh -c "python /home/cobra_system/sistema_cobranza/manage.py runserver 0:80"
+      - ./public/sistema_cobranza:/home/sistema_cobranza
+    command: gunicorn --bind 0.0.0.0:${SYSTEM_PORT} sistema_cobranza.wsgi
+    #sh -c "python ./manage.py runserver 0:${SYSTEM_PORT}"
+    #gunicorn --bind 0.0.0.0:${SYSTEM_PORT} sistema_cobranza.wsgi:application
     depends_on:
       - cobra_db
     networks:
@@ -31,6 +33,17 @@ services:
     restart: always 
     volumes:
       - cobra-data:/var/lib/postgresql/data
+    networks:
+      - cobra-red
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./public/sistema_cobranza/staticfiles:/home/sistema_cobranza/staticfiles
+    depends_on:
+      - cobra_system
     networks:
       - cobra-red
 
