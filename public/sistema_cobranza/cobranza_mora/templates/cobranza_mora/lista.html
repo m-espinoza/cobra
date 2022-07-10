@@ -1,14 +1,6 @@
-<html>
-<head>
-	<title>Lista</title>
-
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
-<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
-
-</head>
-<body>  
+{% extends 'base.html' %} 
+{% block title %}Listas{% endblock title %} 
+{% block content %}
 
 {% if request.user.is_authenticated %}
 
@@ -54,5 +46,4 @@
    <p>Usted no está autentificado</p>
    <a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
 {% endif %}
-</body>
-</html>
+{% endblock %}

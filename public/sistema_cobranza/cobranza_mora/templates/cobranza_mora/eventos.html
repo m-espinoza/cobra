@@ -1,13 +1,6 @@
-<html>
-	<head>
-	<title>Evento</title>
-{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
-	<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
-	</head>
-	<body class="container">
-{% block content%}
+{% extends 'base.html' %} 
+{% block title %}{{ title }}{% endblock title %} 
+{% block content %}
 <h1>{{ title }}</h1>
 <br>
 <form name="form_event" method="POST"> 
@@ -29,7 +22,6 @@
 </form>
 
 
-</body>
 <!-- <script>
 	$(document).ready(function(){
 		$(".btn").click(function(){

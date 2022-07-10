@@ -1,15 +1,6 @@
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ title }}</title>
-	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
-	<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
-</head>
-<body>
+{% extends 'base.html' %} 
+{% block title %}{{ title }}{% endblock title %} 
+{% block content %}
 	<h1>Listado de eventos de: {{ title }}</h1>
 	<br><br>
 	{% if request.user.is_authenticated %}
@@ -37,7 +28,4 @@
 		<p>Usted no está autentificado</p>
 		<a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
 	{% endif %}
-
-	
-</body>
-</html>
+{% endblock %}

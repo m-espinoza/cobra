@@ -1,16 +1,9 @@
-<html>
-<head>
-	<title>Inicio</title>
-<h1>COBRA System</h1>
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'cobranza_mora/style.css' %}">
-<script src="{% static 'cobranza_mora/jquery.js' %}"></script>
-
-</head>
-<body>  
+{% extends 'base.html' %} 
+{% block title %}Cobra{% endblock title %} 
+{% block content %}
 
 {% if request.user.is_authenticated %}
+<h1>Bienvenido {{request.user}}</h1>
 	{% if latest_list %}
 		<table class="table table-bordered">
 			<thead>
@@ -38,5 +31,4 @@
 <p>Usted no está autentificado</p>
 <a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
 {% endif %}
-</body>
-</html>
+{% endblock %}
