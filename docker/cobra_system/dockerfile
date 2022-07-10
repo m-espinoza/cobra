@@ -1,7 +1,7 @@
 FROM python:3.9-slim
 
 RUN apt-get update && \
-	apt-get install libpq-dev gcc -y
+	apt-get install libpq-dev gcc build-essential libssl-dev libffi-dev -y
 
 ENV TZ = America/Argentina/Mendoza
 

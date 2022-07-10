@@ -29,3 +29,6 @@
 - Info sobre usuarios de django https://docs.djangoproject.com/en/3.2/topics/auth/default/#authentication-in-web-requests
 - Tutorial de DJANGO en video: https://youtube.com/playlist?list=PLEsfXFp6DpzTD1BD1aWNxS2Ep06vIkaeW
 - En caso de tener poblemas con las variables estatiacas esto las resetea `docker-compose -f docker-compose.prod.yml exec cobra_system python manage.py collectstatic --no-input --clear`
+- Tutorial nginx: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/#nginx
+- Tutorial token simple: https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html 
+- Tutorial token avanzado: https://james1345.github.io/django-rest-knox/

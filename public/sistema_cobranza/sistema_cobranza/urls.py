@@ -19,7 +19,7 @@ from cobranza_mora import views
 from django.conf import settings
 
 from rest_framework import routers
-from rest_framework.authtoken.views import obtain_auth_token
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -39,6 +39,5 @@ urlpatterns = [
 	path('', include('cobranza_mora.urls')),
 	path('admin/', admin.site.urls),
 	path('api/', include(router.urls)),
-	path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-	path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+	path('api/auth/', include('knox.urls'))
 ]

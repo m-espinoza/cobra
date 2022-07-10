@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from django.conf.urls.static import static
+from django.utils.timezone import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',
-	'rest_framework.authtoken',
+	'knox',
 ]
 
 MIDDLEWARE = [
@@ -57,14 +58,23 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
 	# Use Django's standard `django.contrib.auth` permissions,
 	# or allow read-only access for unauthenticated users.
-	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+	#'DEFAULT_PERMISSION_CLASSES': [
+	#	'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
 		#'rest_framework.permissions.IsAuthenticated',
-	],
+	#],
 
 	'DEFAULT_AUTHENTICATION_CLASSES': [
-		'rest_framework.authentication.TokenAuthentication',
+		#'rest_framework.authentication.TokenAuthentication',
+		'knox.auth.TokenAuthentication',
+		'rest_framework.authentication.BasicAuthentication',
 	],
+}
+
+
+
+REST_KNOX = {
+	'TOKEN_TTL':timedelta(hours=5),
+	'TOKEN_LIMIT_PER_USER':5, 
 }
 
 ROOT_URLCONF = 'sistema_cobranza.urls'
