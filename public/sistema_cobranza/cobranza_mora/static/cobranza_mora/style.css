@@ -1,3 +1,10 @@
 body {background: #ffffff;}
 a {color: midnightblue;}
 thead{font-weight: bold;}
+.table-vertical {
+	overflow: auto;
+	position: sticky;
+	top: 0;
+	max-height: 65vh;
+}
+.orueba{height: 1px;}

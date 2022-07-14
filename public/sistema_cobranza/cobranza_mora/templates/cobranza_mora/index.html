@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-<h1>Bienvenido {{request.user}}</h1>
+<h1>Bienvenido {{request.user.username}}</h1>
 	{% if latest_list %}
 		<table class="table table-bordered">
 			<thead>
@@ -29,6 +29,6 @@
 
 {% else %}
 <p>Usted no está autentificado</p>
-<a href="{% url 'cobranza_mora:login' %}">Iniciar Seción</a>
+<a href="{% url 'cobranza_mora:login' %}">Iniciar Sesión</a>
 {% endif %}
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views import generic
@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from datetime import date
 from .models import *
 from .forms import EventoForm
+from django.core import serializers as json_transform
+from django.views.decorators.csrf import csrf_protect
 
 from rest_framework import viewsets, permissions
 from .serializers import *
@@ -90,6 +92,56 @@ def evento_list_view(request, id_cliente):
 	}
 
 	return render(request, template_name, context)
+
+
+def lista_dinamica_view(request, id_lista):
+
+	template_name = 'cobranza_mora/lista_dinamica.html'
+
+	lista_elegida = Lista.objects.filter(
+				pk = id_lista,
+				fecha_inicio__lte = date.today(),
+				fecha_vencimiento__gte = date.today(),
+			)
+
+	if lista_elegida:
+
+		lista_cliente = Lista_cliente.objects.filter(
+				estado = 1,
+				lista = id_lista,
+				user_id = request.user.id
+			).order_by('cliente__nombre')
+	else:
+		lista_cliente = ""
+	
+
+	context = {
+		'title' : lista_elegida,
+		'lista' : lista_cliente
+	}
+
+	return render(request, template_name, context)
+
+
+@csrf_protect
+def cliente_detalle_view(request):
+
+	template_name = 'cobranza_mora/lista_dinamica.html'
+
+	if request.method == 'POST':
+
+		id_cliente = request.POST['id_cliente']
+
+		cliente = Cliente.objects.filter(pk=id_cliente)
+
+		data = json_transform.serialize('json', cliente)
+
+		return HttpResponse(data, content_type='application/json')
+	
+	else:
+		return HttpResponse("Request method is not a POST")
+
+	
 
 
 class UserViewSet(viewsets.ModelViewSet):
