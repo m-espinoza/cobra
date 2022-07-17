@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from datetime import date
 from .models import *
 from .forms import EventoForm
-from django.core import serializers as json_transform
 from django.views.decorators.csrf import csrf_protect
 
 from rest_framework import viewsets, permissions
@@ -110,7 +109,7 @@ def lista_dinamica_view(request, id_lista):
 				estado = 1,
 				lista = id_lista,
 				user_id = request.user.id
-			).order_by('cliente__nombre')
+			).order_by('cliente__empresa', 'cliente__nombre')
 	else:
 		lista_cliente = ""
 	
@@ -126,20 +125,50 @@ def lista_dinamica_view(request, id_lista):
 @csrf_protect
 def cliente_detalle_view(request):
 
-	template_name = 'cobranza_mora/lista_dinamica.html'
-
-	if request.method == 'POST':
+	if request.method == 'POST' and request.is_ajax():
 
 		id_cliente = request.POST['id_cliente']
 
-		cliente = Cliente.objects.filter(pk=id_cliente)
+		cliente = Cliente.objects.filter(
+			pk=id_cliente
+		).values(
+			'nombre',
+			'dni',
+			'cuenta',
+			'correo',
+			'deuda_minima',
+			'deuda_parcial',
+			'deuda_total'
+		)
 
-		data = json_transform.serialize('json', cliente)
+		telefono = Telefono.objects.filter(
+			cliente_id = id_cliente,
+			estado = 1
+		).values_list(
+			'telefono_tipo__telefono_tipo',
+			'telefono'
+		)
 
-		return HttpResponse(data, content_type='application/json')
-	
-	else:
-		return HttpResponse("Request method is not a POST")
+		if not telefono:
+			telefono = "El cliente no tiene teléfono"
+
+			data = {
+				'cliente': list(cliente),
+				'telefono': telefono,
+			}
+
+		else:
+			data = {
+				'cliente': list(cliente),
+				'telefono': list(telefono),
+			}
+
+		print(data)
+
+		if cliente:
+			return JsonResponse(data, safe=False)		
+		else:
+			return HttpResponse("El cliente no existe")					
 
 	
 

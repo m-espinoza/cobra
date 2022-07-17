@@ -1,10 +1,12 @@
 body {background: #ffffff;}
 a {color: midnightblue;}
 thead{font-weight: bold;}
-.table-vertical {
+.tabla-vertical {
 	overflow: auto;
 	position: sticky;
 	top: 0;
 	max-height: 65vh;
 }
-.orueba{height: 1px;}
+.datos_contacto{
+	margin-top: 10px;
+}

@@ -6,24 +6,27 @@
 	<br>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-3">
-				<p class="lead">Clientes</p>
-				<div class="table-vertical">
+			<div class="col-sm-4">
+				<p class="lead">Empresa / Cliente / Cuenta</p>
+				<div class="tabla-vertical">
 					<table class="table table-bordered table-hover border-primary">
 						{% csrf_token %}
 						{% for l in lista %}
 						<tr>
-							<td id="{{ l.cliente.id }}">{{ l.cliente }}</td>
+							<td id="{{ l.cliente.id }}">{{ l.cliente.empresa }} - {{ l.cliente }} - {{ l.cliente.cuenta }}</td>
 						</tr>
 						{% endfor %}
 					</table>
 				</div>
 			</div>
-			<div class="col-sm-5">
+			<div class="col-sm-4">
 				<p class="lead">Información</p>
+				<div class="datos_personales"></div>
+				<div class="datos_contacto"></div>
 			</div>
 			<div class="col-sm-4">
 				<p class="lead">Formulario</p>
+				
 			</div>
 			</div>
 	</div>
@@ -38,18 +41,62 @@
 	$(document).ready(function(){
 
 		$(".table tbody tr td ").on( "click", function() {
-			
-			id = $( this ).attr('id')
 
+			var datos_personales = "";
+			var datos_contacto = "";
+			var csrfmiddlewaretoken = $('[name=csrfmiddlewaretoken]').val()
+			
+			id = $(this).attr('id');
+
+			// Busco al cliente
 			$.post({
 				url: "{% url 'cobranza_mora:cliente_detalle' %}",
 				data: {id_cliente:id},
-				headers: {"X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()}
-			},
-			
-			function(data) {
-				console.log( data );
+				headers: {"X-CSRFToken": csrfmiddlewaretoken}
+			},			
+			function(data_cliente) {
+
+				if(data_cliente['cliente']){
+
+					datos_personales = "";
+
+					Object.entries(data_cliente["cliente"]["0"]).forEach(([key, value]) => {
+							
+						if(key != "empresa"){
+							datos_personales += `<b>${key.toUpperCase().replace("_", " ")}</b>: ${value}<br>`;						
+						}
+
+					});
+
+					$(".datos_personales").html(datos_personales);					
+				}
+				else{
+					$(".datos_personales").html(data_cliente['cliente']);
+				}
+
+				if(Array.isArray(data_cliente['telefono'])){
+
+					datos_contacto = "";
+
+					$.each(data_cliente['telefono'], function(key, value){
+
+						$.each(data_cliente['telefono'][key], function(key1, value1){
+							//datos_contacto += `<b>${key1.toUpperCase().replace("_", " ")}</b>: ${value1}<br>`;
+							datos_contacto += `<b>${value1.toUpperCase()}</b> `;
+						});
+						
+						datos_contacto += "<br>"
+
+					});
+
+					$(".datos_contacto").html(datos_contacto);
+				}
+				else{
+					$(".datos_contacto").html(data_cliente['telefono']);
+				}
+				
 			});
+			
 		});
 
 	});
