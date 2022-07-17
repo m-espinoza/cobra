@@ -144,7 +144,7 @@ def cliente_detalle_view(request):
 		telefono = Telefono.objects.filter(
 			cliente_id = id_cliente,
 			estado = 1
-		).values_list(
+		).values(
 			'telefono_tipo__telefono_tipo',
 			'telefono'
 		)

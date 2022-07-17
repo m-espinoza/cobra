@@ -20,9 +20,10 @@
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<p class="lead">Información</p>
-				<div class="datos_personales"></div>
+				<p class="lead">Información personal</p>
 				<div class="datos_contacto"></div>
+				<div class="datos_personales"></div>
+				
 			</div>
 			<div class="col-sm-4">
 				<p class="lead">Formulario</p>
@@ -81,8 +82,14 @@
 					$.each(data_cliente['telefono'], function(key, value){
 
 						$.each(data_cliente['telefono'][key], function(key1, value1){
-							//datos_contacto += `<b>${key1.toUpperCase().replace("_", " ")}</b>: ${value1}<br>`;
-							datos_contacto += `<b>${value1.toUpperCase()}</b> `;
+
+							if(key1 == 'telefono'){
+								datos_contacto += `<a href="tel:${value1}">${value1}</a>`;
+							}
+							else{
+								datos_contacto += `<b>${value1.toUpperCase()}:</b> `;
+							}
+							
 						});
 						
 						datos_contacto += "<br>"
