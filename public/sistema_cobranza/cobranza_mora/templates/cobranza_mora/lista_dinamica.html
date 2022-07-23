@@ -6,10 +6,10 @@
 	<br>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<p class="lead">Empresa / Cliente / Cuenta</p>
 				<div class="tabla-vertical">
-					<table class="table table-bordered table-hover border-primary">
+					<table class="table table-bordered table-hover">
 						{% csrf_token %}
 						{% for l in lista %}
 						<tr>
@@ -19,16 +19,23 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<p class="lead">Información personal</p>
 				<div class="datos_contacto"></div>
-				<div class="datos_personales"></div>
+				<div class="datos_personales"></div>				
+			</div>
+			
+			<div class="col-sm-3">
+				<p class="lead">Pagos</p>
+				<div class="historial_pagos tabla-vertical"></div>
 				
 			</div>
-			<div class="col-sm-4">
-				<p class="lead">Formulario</p>
+			<div class="col-sm-3">
+				<p class="lead">Eventos</p>
+				<div class="historial_eventos tabla-vertical"></div>
 				
 			</div>
+
 			</div>
 	</div>
 
@@ -45,11 +52,12 @@
 
 			var datos_personales = "";
 			var datos_contacto = "";
+			var datos_evento = "";
 			var csrfmiddlewaretoken = $('[name=csrfmiddlewaretoken]').val()
 			
 			id = $(this).attr('id');
 
-			// Busco al cliente
+			// Busco datos
 			$.post({
 				url: "{% url 'cobranza_mora:cliente_detalle' %}",
 				data: {id_cliente:id},
@@ -57,7 +65,7 @@
 			},			
 			function(data_cliente) {
 
-				if(data_cliente['cliente']){
+				if(data_cliente['cliente'].length > 0){
 
 					datos_personales = "";
 
@@ -75,7 +83,8 @@
 					$(".datos_personales").html(data_cliente['cliente']);
 				}
 
-				if(Array.isArray(data_cliente['telefono'])){
+
+				if(data_cliente['telefono'].length > 0){
 
 					datos_contacto = "";
 
@@ -99,8 +108,51 @@
 					$(".datos_contacto").html(datos_contacto);
 				}
 				else{
-					$(".datos_contacto").html(data_cliente['telefono']);
+					$(".datos_contacto").html("El cliente no tiene teléfono");
 				}
+
+
+				if(data_cliente['evento'].length > 0){
+
+					datos_evento = `<div class="accordion accordion-flush" id="evento_acordeon">`;
+
+					$.each(data_cliente['evento'], function(key, value){
+						
+						titulo = `${data_cliente['evento'][key]['fecha_creado'].slice(0, -8).replace("T"," ")}<br>						
+						${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
+						${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
+						${data_cliente['evento'][key]['telefono__telefono']}<br> 
+						Respuesta: ${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}<br> 
+						Responsable: ${data_cliente['evento'][key]['user__username']}`;
+
+						datos_evento += `
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="headingOne">
+								<button class="accordion-button collapsed" 
+								type="button" data-bs-toggle="collapse" 
+								data-bs-target="#id_${data_cliente['evento'][key]['id']}" 
+								aria-expanded="true" aria-controls="id_${data_cliente['evento'][key]['id']}">
+									${titulo}
+								</button>
+							</h2>
+						<div id="id_${data_cliente['evento'][key]['id']}" class="accordion-collapse collapse" aria-labelledby="headingOne" style="">
+							<div class="accordion-body">
+								<strong>${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}</strong><br>
+								${data_cliente['evento'][key]['mensaje']}
+							</div>
+						</div>`;
+
+					});
+
+					datos_evento += `</div>
+					</div>`;
+
+					$(".historial_eventos").html(datos_evento);
+				}
+				else{
+					$(".historial_eventos").html("");
+				}
+
 				
 			});
 			

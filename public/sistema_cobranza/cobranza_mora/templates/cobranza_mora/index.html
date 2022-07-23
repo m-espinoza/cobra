@@ -15,7 +15,7 @@
 			</thead>
 		{% for lista in latest_list %}
 			<tr>
-				<td><a href="{% url 'cobranza_mora:lista' lista.id %}">{{ lista.lista }}</a></td>
+				<td><a href="{% url 'cobranza_mora:lista_dinamica' lista.id %}">{{ lista.lista }}</a></td>
 				<td>{{ lista.mora }}</td>
 				<td>{{ lista.empresa }}</td>
 				<td>{{ lista.fecha_inicio }}</td>

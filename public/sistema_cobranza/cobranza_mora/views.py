@@ -128,6 +128,7 @@ def cliente_detalle_view(request):
 	if request.method == 'POST' and request.is_ajax():
 
 		id_cliente = request.POST['id_cliente']
+		data = {}
 
 		cliente = Cliente.objects.filter(
 			pk=id_cliente
@@ -149,24 +150,32 @@ def cliente_detalle_view(request):
 			'telefono'
 		)
 
-		if not telefono:
-			telefono = "El cliente no tiene teléfono"
+		evento = Evento.objects.filter(
+			cliente_id = id_cliente
+		).values(
+			'id',
+			'fecha_creado',
+			'evento_tipo__evento_tipo',
+			'evento_respuesta__evento_respuesta',
+			'telefono__telefono_tipo__telefono_tipo',
+			'telefono__telefono',
+			'mensaje',
+			'user__username'			
+		).order_by(
+			'-fecha_creado'
+		)
 
-			data = {
-				'cliente': list(cliente),
-				'telefono': telefono,
-			}
-
-		else:
-			data = {
-				'cliente': list(cliente),
-				'telefono': list(telefono),
-			}
-
+		data = {
+			'cliente': list(cliente),
+			'telefono': list(telefono),
+			'evento': list(evento),
+		}
+		
 		print(data)
 
 		if cliente:
-			return JsonResponse(data, safe=False)		
+			return JsonResponse(data, safe=False)
+			
 		else:
 			return HttpResponse("El cliente no existe")					
 

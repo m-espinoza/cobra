@@ -1,5 +1,5 @@
-body {background: #ffffff;}
-a {color: midnightblue;}
+body {background: #d4d4d4;}
+a {color: #fa8231;}
 thead{font-weight: bold;}
 .tabla-vertical {
 	overflow: auto;
@@ -8,5 +8,8 @@ thead{font-weight: bold;}
 	max-height: 65vh;
 }
 .datos_personales{
+	margin-top: 10px;
+}
+.historial_eventos{
 	margin-top: 10px;
 }
