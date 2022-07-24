@@ -30,6 +30,9 @@ class IndexView(generic.ListView):
 				lista_cliente__estado_id = 1,
 				lista_cliente__user_id = self.request.user.id
 			).order_by('fecha_creado').distinct()
+
+
+
 """
 # ejemplo de vista generica basada en modelo
 
@@ -107,8 +110,7 @@ def cliente_detalle_view(request):
 	if request.method == 'POST' and request.is_ajax():
 
 		id_cliente = request.POST['id_cliente']
-		data = {}		
-		#tz = pytz.timezone(os.environ['TZ'])
+		data = {}
 
 		cliente = Cliente.objects.filter(
 			pk=id_cliente
@@ -256,4 +258,11 @@ class EventoViewSet(viewsets.ModelViewSet):
 
 	queryset = Evento.objects.all()
 	serializer_class = EventoSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class PagoViewSet(viewsets.ModelViewSet):
+
+	queryset = Pago.objects.all()
+	serializer_class = PagoSerializer
 	permission_classes = [permissions.IsAdminUser]

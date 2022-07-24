@@ -90,3 +90,9 @@ class EventoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Evento
 		fields = "__all__"
+
+
+class PagoSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Pago
+		fields = "__all__"

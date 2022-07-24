@@ -141,3 +141,12 @@ class Evento(models.Model):
 
 	fecha_creado = models.DateTimeField(auto_now_add=True, null=True)
 	fecha_modificado = models.DateTimeField(auto_now=True, null=True)
+
+class Pago(models.Model):
+	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+	estado = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True)
+
+	importe = models.FloatField()
+	medio = models.CharField(max_length=140)
+	fecha_pago = models.DateTimeField(null=True)
+	fecha_carga = models.DateTimeField(auto_now_add=True, null=True)

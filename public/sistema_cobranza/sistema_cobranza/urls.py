@@ -35,6 +35,7 @@ router.register(r'telefono', views.TelefonoViewSet)
 router.register(r'evento_tipo', views.Evento_tipoViewSet)
 router.register(r'evento_respuesta', views.Evento_respuestaViewSet)
 router.register(r'evento', views.EventoViewSet)
+router.register(r'pago', views.PagoViewSet)
 
 
 
