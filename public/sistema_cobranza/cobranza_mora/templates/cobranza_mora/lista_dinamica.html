@@ -31,7 +31,7 @@
 				
 			</div>
 			<div class="col-sm-3">
-				<p class="lead">Eventos</p>
+				<p class="lead">Listado de Eventos</p>
 				<div class="historial_eventos tabla-vertical"></div>
 				
 			</div>
@@ -53,6 +53,7 @@
 			var datos_personales = "";
 			var datos_contacto = "";
 			var datos_evento = "";
+			var datos_pago = "";
 			var csrfmiddlewaretoken = $('[name=csrfmiddlewaretoken]').val()
 			
 			id = $(this).attr('id');
@@ -70,11 +71,7 @@
 					datos_personales = "";
 
 					Object.entries(data_cliente["cliente"]["0"]).forEach(([key, value]) => {
-							
-						if(key != "empresa"){
-							datos_personales += `<b>${key.toUpperCase().replace("_", " ")}</b>: ${value}<br>`;						
-						}
-
+						datos_personales += `<b>${key.toUpperCase().replace("_", " ")}</b>: ${value}<br>`;
 					});
 
 					$(".datos_personales").html(datos_personales);					
@@ -118,12 +115,14 @@
 
 					$.each(data_cliente['evento'], function(key, value){
 						
-						titulo = `${data_cliente['evento'][key]['fecha_creado']}<br>						
-						${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
-						${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
-						${data_cliente['evento'][key]['telefono__telefono']}<br> 
-						Respuesta: ${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}<br> 
-						Responsable: ${data_cliente['evento'][key]['user__username']}`;
+						titulo = `<div>
+							<p class="fw-bold">${data_cliente['evento'][key]['fecha_creado']}</p>						
+							<p class="fw-normal">${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
+							${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
+							${data_cliente['evento'][key]['telefono__telefono']}
+							Respuesta: ${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}<br> 
+							Responsable: ${data_cliente['evento'][key]['user__username']}</p>
+						</div>`;
 
 						datos_evento += `
 						<div class="accordion-item">
@@ -151,6 +150,28 @@
 				}
 				else{
 					$(".historial_eventos").html("");
+				}
+
+				if(data_cliente['pago'].length > 0){
+					datos_pago = `<div class="list-group">`;
+
+					$.each(data_cliente['pago'], function(key, value){
+						datos_pago += `
+						<div class="list-group-item list-group-item-action">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1">$${data_cliente['pago'][key]['importe']}</h5>
+								<small>${data_cliente['pago'][key]['fecha_pago']}</small>
+							</div>
+							<p class="mb-1">${data_cliente['pago'][key]['medio']}</p>
+						</div>`;
+					});
+
+					datos_pago += `</div>`
+
+					$(".historial_pagos").html(datos_pago);
+				}
+				else{
+					$(".historial_pagos").html("");
 				}
 
 				

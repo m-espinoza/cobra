@@ -132,6 +132,18 @@ def cliente_detalle_view(request):
 			'telefono'
 		)
 
+		pago = Pago.objects.filter(
+			cliente_id = id_cliente,
+			estado = 1,
+		).values(
+			'importe',
+			'medio',
+			'fecha_pago'
+		).order_by(
+			'-fecha_pago',
+			'-fecha_carga'
+		)
+
 		evento = Evento.objects.filter(
 			cliente_id = id_cliente
 		).values(
@@ -142,18 +154,22 @@ def cliente_detalle_view(request):
 			'telefono__telefono',
 			'mensaje',
 			'user__username',
-			'fecha_creado',
+			'fecha_creado'
 		).order_by(
 			'-fecha_creado'
 		)
 
-		for k in range(0, len(list(evento))):
-			evento[k]['fecha_creado'] = evento[k]['fecha_creado'].astimezone(timezone(os.environ['TZ'])).strftime("%d/%m/%Y %H:%M")
-			
+		for i in range(0, len(list(pago))):
+			pago[i]['fecha_pago'] = pago[i]['fecha_pago'].astimezone(timezone(os.environ['TZ'])).strftime("%d/%m/%Y %H:%M")
+
+		for j in range(0, len(list(evento))):
+			evento[j]['fecha_creado'] = evento[j]['fecha_creado'].astimezone(timezone(os.environ['TZ'])).strftime("%d/%m/%Y %H:%M")
+				
 
 		data = {
 			'cliente': list(cliente),
 			'telefono': list(telefono),
+			'pago': list(pago),
 			'evento': list(evento),
 		}
 
