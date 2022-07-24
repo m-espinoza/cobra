@@ -7,12 +7,9 @@ import os
 from pytz import timezone
 from datetime import date, datetime
 from django.contrib.auth.models import User
-#from django.contrib import messages
-from datetime import date
 from .models import *
 from .forms import EventoForm
 from django.views.decorators.csrf import csrf_protect
-
 from rest_framework import viewsets, permissions
 from .serializers import *
 
@@ -33,19 +30,16 @@ class IndexView(generic.ListView):
 				lista_cliente__estado_id = 1,
 				lista_cliente__user_id = self.request.user.id
 			).order_by('fecha_creado').distinct()
+"""
+# ejemplo de vista generica basada en modelo
 
 class ListaView(generic.DetailView):
 	model = Lista
 	template_name = 'cobranza_mora/lista.html'
 	#context_object_name = 'detalle_list'
 
-	"""
-	def get_queryset(self):
-			  
-		return Lista_cliente.objects.filter(
-			estado_id = 1			
-		)
-	"""
+
+"""
 
 def evento_create_view(request, id_cliente):
 	""" basado en el get me fijo si el cliente existe y habilito el formulario con el cliente seteado"""
@@ -73,24 +67,6 @@ def evento_create_view(request, id_cliente):
 		'title' : "Cargar Evento",
 		'form_event' : form_event,
 		'telefonos': telefonos
-	}
-
-	return render(request, template_name, context)
-
-
-def evento_list_view(request, id_cliente):
-
-	template_name = 'cobranza_mora/lista_eventos.html'
-
-	cliente = get_object_or_404(Cliente, pk=id_cliente)
-
-	lista = Evento.objects.filter(
-			cliente_id = id_cliente
-		).order_by('-fecha_creado')
-	
-	context = {
-		'title' : cliente.nombre + " DNI: " + str(cliente.dni),
-		'lista_eventos' : lista
 	}
 
 	return render(request, template_name, context)
