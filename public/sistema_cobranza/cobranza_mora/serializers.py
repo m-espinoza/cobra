@@ -72,3 +72,21 @@ class TelefonoSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Telefono
 		fields = "__all__"
+
+
+class Evento_tipoSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Evento_tipo
+		fields = "__all__"
+
+
+class Evento_respuestaSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Evento_respuesta
+		fields = "__all__"
+
+
+class EventoSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Evento
+		fields = "__all__"

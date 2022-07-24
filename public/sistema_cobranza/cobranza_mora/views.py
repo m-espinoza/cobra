@@ -2,7 +2,10 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonRespons
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views import generic
-from django.utils import timezone
+from django.utils.timezone import localtime
+import os
+from pytz import timezone
+from datetime import date, datetime
 from django.contrib.auth.models import User
 #from django.contrib import messages
 from datetime import date
@@ -128,7 +131,8 @@ def cliente_detalle_view(request):
 	if request.method == 'POST' and request.is_ajax():
 
 		id_cliente = request.POST['id_cliente']
-		data = {}
+		data = {}		
+		#tz = pytz.timezone(os.environ['TZ'])
 
 		cliente = Cliente.objects.filter(
 			pk=id_cliente
@@ -154,24 +158,26 @@ def cliente_detalle_view(request):
 			cliente_id = id_cliente
 		).values(
 			'id',
-			'fecha_creado',
 			'evento_tipo__evento_tipo',
 			'evento_respuesta__evento_respuesta',
 			'telefono__telefono_tipo__telefono_tipo',
 			'telefono__telefono',
 			'mensaje',
-			'user__username'			
+			'user__username',
+			'fecha_creado',
 		).order_by(
 			'-fecha_creado'
 		)
+
+		for k in range(0, len(list(evento))):
+			evento[k]['fecha_creado'] = evento[k]['fecha_creado'].astimezone(timezone(os.environ['TZ'])).strftime("%d/%m/%Y %H:%M")
+			
 
 		data = {
 			'cliente': list(cliente),
 			'telefono': list(telefono),
 			'evento': list(evento),
 		}
-		
-		print(data)
 
 		if cliente:
 			return JsonResponse(data, safe=False)
@@ -253,4 +259,25 @@ class TelefonoViewSet(viewsets.ModelViewSet):
 
 	queryset = Telefono.objects.all()
 	serializer_class = TelefonoSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class Evento_tipoViewSet(viewsets.ModelViewSet):
+
+	queryset = Evento_tipo.objects.all()
+	serializer_class = Evento_tipoSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class Evento_respuestaViewSet(viewsets.ModelViewSet):
+
+	queryset = Evento_respuesta.objects.all()
+	serializer_class = Evento_respuestaSerializer
+	permission_classes = [permissions.IsAdminUser]
+
+
+class EventoViewSet(viewsets.ModelViewSet):
+
+	queryset = Evento.objects.all()
+	serializer_class = EventoSerializer
 	permission_classes = [permissions.IsAdminUser]

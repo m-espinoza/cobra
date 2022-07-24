@@ -32,6 +32,9 @@ router.register(r'lista', views.ListaViewSet)
 router.register(r'lista_cliente', views.Lista_clienteViewSet)
 router.register(r'telefono_tipo', views.Telefono_tipoViewSet)
 router.register(r'telefono', views.TelefonoViewSet)
+router.register(r'evento_tipo', views.Evento_tipoViewSet)
+router.register(r'evento_respuesta', views.Evento_respuestaViewSet)
+router.register(r'evento', views.EventoViewSet)
 
 
 

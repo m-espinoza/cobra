@@ -118,7 +118,7 @@
 
 					$.each(data_cliente['evento'], function(key, value){
 						
-						titulo = `${data_cliente['evento'][key]['fecha_creado'].slice(0, -8).replace("T"," ")}<br>						
+						titulo = `${data_cliente['evento'][key]['fecha_creado']}<br>						
 						${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
 						${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
 						${data_cliente['evento'][key]['telefono__telefono']}<br> 

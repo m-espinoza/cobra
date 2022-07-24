@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-AR'
 
-TIME_ZONE = 'America/Argentina/Mendoza'
+TIME_ZONE = os.environ['TZ']
 
 USE_I18N = True
 
