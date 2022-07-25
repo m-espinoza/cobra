@@ -9,7 +9,7 @@ urlpatterns = [
 	path('', views.IndexView.as_view(), name='index'),
 	path('login/', LoginView.as_view(template_name='cobranza_mora/login.html'), name='login'),
 	path('logout/', LogoutView.as_view(template_name='cobranza_mora/logout.html'), name='logout'),
-	path('evento/<int:id_cliente>', views.evento_create_view, name='evento'),
+	path('evento/', views.evento_crear_view, name='evento_crear'),
 	path('lista_dinamica/<int:id_lista>', views.lista_dinamica_view, name='lista_dinamica'),
 	path('cliente_detalle/', views.cliente_detalle_view, name='cliente_detalle'),
 ]

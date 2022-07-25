@@ -44,35 +44,19 @@ class ListaView(generic.DetailView):
 
 """
 
-def evento_create_view(request, id_cliente):
-	""" basado en el get me fijo si el cliente existe y habilito el formulario con el cliente seteado"""
-	
-	template_name = 'cobranza_mora/eventos.html'
+@csrf_protect
+def evento_crear_view(request):
 
-	cliente = get_object_or_404(Cliente, pk=id_cliente)
-	
-	telefono_habilitado = Telefono.objects.filter(estado_id = 1)
-	telefonos = get_list_or_404(telefono_habilitado, cliente=id_cliente)
-	
+	if request.method == 'POST' and request.is_ajax():
 
-	initial_dict = {
-		"cliente" : cliente,
-		'user' : request.user
-	}
+		form_event = EventoForm(request.POST or None)
 
-	form_event = EventoForm(request.POST or None, initial = initial_dict)
+		if form_event.is_valid():
+			form_event.save()
+			#messages.success(request, 'Successfully saved')
+		
+			return HttpResponse("ok")
 
-	if form_event.is_valid():
-		form_event.save()
-		#messages.success(request, 'Successfully saved')
-
-	context = {
-		'title' : "Cargar Evento",
-		'form_event' : form_event,
-		'telefonos': telefonos
-	}
-
-	return render(request, template_name, context)
 
 
 def lista_dinamica_view(request, id_lista):
@@ -128,6 +112,7 @@ def cliente_detalle_view(request):
 			cliente_id = id_cliente,
 			estado = 1
 		).values(
+			'id',
 			'telefono_tipo__telefono_tipo',
 			'telefono'
 		)
@@ -164,13 +149,21 @@ def cliente_detalle_view(request):
 
 		for j in range(0, len(list(evento))):
 			evento[j]['fecha_creado'] = evento[j]['fecha_creado'].astimezone(timezone(os.environ['TZ'])).strftime("%d/%m/%Y %H:%M")
-				
+
+
+		initial_dict = {
+			"cliente" : id_cliente,
+			'user' : request.user
+		}
+
+		form_event = EventoForm(initial = initial_dict)
 
 		data = {
 			'cliente': list(cliente),
 			'telefono': list(telefono),
 			'pago': list(pago),
 			'evento': list(evento),
+			'form_evento': str(form_event),
 		}
 
 		if cliente:

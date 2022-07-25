@@ -13,3 +13,7 @@ thead{font-weight: bold;}
 .historial_eventos{
 	margin-top: 10px;
 }
+.evento_modal{
+	display: none;
+	margin-top: 20px;
+}

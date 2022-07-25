@@ -22,7 +22,32 @@
 			<div class="col-sm-3">
 				<p class="lead">Información personal</p>
 				<div class="datos_contacto"></div>
-				<div class="datos_personales"></div>				
+				<div class="datos_personales"></div>
+				
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-success btn-lg evento_modal" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					Cargar evento
+				</button>
+				
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Cargar evento</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="form_evento"></div>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-primary form_guardar" data-bs-dismiss="modal">Guardar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 			
 			<div class="col-sm-3">
@@ -35,7 +60,7 @@
 				<div class="historial_eventos tabla-vertical"></div>
 				
 			</div>
-
+			<input type="hidden" id="ultimo_cliente" value="">
 			</div>
 	</div>
 
@@ -48,15 +73,20 @@
 <script>
 	$(document).ready(function(){
 
+		var csrfmiddlewaretoken = $('[name=csrfmiddlewaretoken]').val()
+
 		$(".table tbody tr td ").on( "click", function() {
 
 			var datos_personales = "";
 			var datos_contacto = "";
 			var datos_evento = "";
 			var datos_pago = "";
-			var csrfmiddlewaretoken = $('[name=csrfmiddlewaretoken]').val()
+			var datos_formulario = "";
+			
 			
 			id = $(this).attr('id');
+
+			$("#ultimo_cliente").val(id);
 
 			// Busco datos
 			$.post({
@@ -86,26 +116,16 @@
 					datos_contacto = "";
 
 					$.each(data_cliente['telefono'], function(key, value){
-
-						$.each(data_cliente['telefono'][key], function(key1, value1){
-
-							if(key1 == 'telefono'){
-								datos_contacto += `<a href="tel:${value1}">${value1}</a>`;
-							}
-							else{
-								datos_contacto += `<b>${value1.toUpperCase()}:</b> `;
-							}
-							
-						});
-						
-						datos_contacto += "<br>"
-
+						datos_contacto += `<p><b>${data_cliente['telefono'][key]['telefono_tipo__telefono_tipo'].toUpperCase()}:</b>
+							<a href="tel:${data_cliente['telefono'][key]['telefono']}">${data_cliente['telefono'][key]['telefono']}</a></p>`;
 					});
 
 					$(".datos_contacto").html(datos_contacto);
+					$(".evento_modal").css("display", "block");
 				}
 				else{
 					$(".datos_contacto").html("El cliente no tiene teléfono");
+					$(".evento_modal").css("display", "none");
 				}
 
 
@@ -116,10 +136,10 @@
 					$.each(data_cliente['evento'], function(key, value){
 						
 						titulo = `<div>
-							<p class="fw-bold">${data_cliente['evento'][key]['fecha_creado']}</p>						
+							<p class="fw-bold">${data_cliente['evento'][key]['fecha_creado']}</p>
 							<p class="fw-normal">${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
 							${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
-							${data_cliente['evento'][key]['telefono__telefono']}
+							${data_cliente['evento'][key]['telefono__telefono']}<br>
 							Respuesta: ${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}<br> 
 							Responsable: ${data_cliente['evento'][key]['user__username']}</p>
 						</div>`;
@@ -174,9 +194,60 @@
 					$(".historial_pagos").html("");
 				}
 
+				if(data_cliente['form_evento'] != ""){
+					datos_formulario += `
+					<form name="form_event" class="form_event_client" method="POST">
+						<table>						
+						<tr><th>
+							<label for="id_telefono">Telefonos: </label></th>
+							<td><select name="telefono" id="id_telefono">
+					`;
+
+					$.each(data_cliente['telefono'], function(key, value){
+						datos_formulario += `<option value="${data_cliente['telefono'][key]['id']}">${data_cliente['telefono'][key]['telefono_tipo__telefono_tipo']} - ${data_cliente['telefono'][key]['telefono']}</option>`;
+					});
+
+					datos_formulario += `</select></td></tr>
+					${data_cliente['form_evento'].replace('<input type="hidden" name="telefono" id="id_telefono">', '')}
+					<input type="hidden" name="csrfmiddlewaretoken" value="${csrfmiddlewaretoken}">
+					</table>
+					</form>`;
+
+					$(".form_evento").html(datos_formulario);
+				}
+
 				
 			});
 			
+		});
+
+
+		$(".modal .form_guardar").on( "click", function() {
+
+			var form = $(".form_event_client").serialize();
+
+			var evento_tipo = $("#id_evento_tipo").val();
+			var evento_respuesta = $("#id_evento_respuesta").val();
+
+			if(evento_tipo == "" || evento_respuesta == ""){
+				alert("Todos los campos deben tener algo seleccionado");
+				return false;
+			}
+
+			$.post({
+				url: "{% url 'cobranza_mora:evento_crear' %}",
+				data: form,
+				headers: {"X-CSRFToken": csrfmiddlewaretoken}
+			},			
+			function(data_event) {
+				console.log(data_event);
+				if(data_event == "ok"){
+					var id_ultimo_cliente = $("#ultimo_cliente").val();
+
+					$(`.table tbody tr #${id_ultimo_cliente}`).trigger( "click");
+				}
+
+			});
 		});
 
 	});

@@ -15,7 +15,7 @@ class EventoForm(ModelForm):
 		]
 
 		widgets = {
-			'mensaje': Textarea(attrs={'cols': 20, 'rows': 5}),
+			'mensaje': Textarea(attrs={'cols': 20, 'rows': 4}),
 			'cliente': HiddenInput(),
 			'telefono': HiddenInput(),
 			'user': HiddenInput()
