@@ -2,14 +2,13 @@
 {% block title %}{{ title.0 }}{% endblock title %} 
 {% block content %}
 {% if request.user.is_authenticated %}
-	<h1>{{ title.0 }}</h1>
-	<br>
+	<h3>Lista: {{ title.0 }}</h3>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3">
 				<p class="lead">Empresa / Cliente / Cuenta</p>
 				<div class="tabla-vertical">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover table-light">
 						{% csrf_token %}
 						{% for l in lista %}
 						<tr>
@@ -67,8 +66,7 @@
 {% else %}
 	<h1>no hay listas para usted</h1>
 {% endif %}
-<br>
-<a href="{% url 'cobranza_mora:index' %}" class="btn btn-primary">Volver</a>
+
 
 <script>
 	$(document).ready(function(){
@@ -87,6 +85,8 @@
 			id = $(this).attr('id');
 
 			$("#ultimo_cliente").val(id);
+
+			$(this).css("background", "#1abc9c");
 
 			// Busco datos
 			$.post({
@@ -138,7 +138,7 @@
 						titulo = `<div>
 							<p class="fw-bold">${data_cliente['evento'][key]['fecha_creado']}</p>
 							<p class="fw-normal">${data_cliente['evento'][key]['evento_tipo__evento_tipo']} - 
-							${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 3)}: 
+							${data_cliente['evento'][key]['telefono__telefono_tipo__telefono_tipo'].slice(0, 4)}: 
 							${data_cliente['evento'][key]['telefono__telefono']}<br>
 							Respuesta: ${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}<br> 
 							Responsable: ${data_cliente['evento'][key]['user__username']}</p>

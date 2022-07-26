@@ -1,11 +1,11 @@
-body {background: #d4d4d4;}
-a {color: #fa8231;}
+body {background: #ecf0f1;}
+a {color: #3498db;}
 thead{font-weight: bold;}
 .tabla-vertical {
 	overflow: auto;
 	position: sticky;
 	top: 0;
-	max-height: 65vh;
+	max-height: 73vh;
 }
 .datos_personales{
 	margin-top: 10px;
@@ -16,4 +16,8 @@ thead{font-weight: bold;}
 .evento_modal{
 	display: none;
 	margin-top: 20px;
+}
+.navbar{
+	margin-bottom: 10px;
+	background-color: #34495e;
 }
