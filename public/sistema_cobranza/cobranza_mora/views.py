@@ -14,7 +14,7 @@ from rest_framework import viewsets, permissions
 from .serializers import *
 
 class IndexView(generic.ListView):
-	template_name = 'cobranza_mora/index.html'
+	template_name = 'cobranza_mora/listas.html'
 	context_object_name = 'latest_list'
 
 	def get_queryset(self):
@@ -61,7 +61,7 @@ def evento_crear_view(request):
 
 def lista_dinamica_view(request, id_lista):
 
-	template_name = 'cobranza_mora/lista_dinamica.html'
+	template_name = 'cobranza_mora/listas_detalle.html'
 
 	lista_elegida = Lista.objects.filter(
 				pk = id_lista,
@@ -71,11 +71,31 @@ def lista_dinamica_view(request, id_lista):
 
 	if lista_elegida:
 
-		lista_cliente = Lista_cliente.objects.filter(
-				estado = 1,
-				lista = id_lista,
-				user_id = request.user.id
-			).order_by('cliente__empresa', 'cliente__nombre')
+		if request.user.is_superuser:
+
+			# Si es superuser trae la lista completa, sin tener en cuenta el usuario responsable
+
+			lista_cliente = Lista_cliente.objects.filter(
+					estado = 1,
+					lista = id_lista,
+				).order_by(
+					'cliente__empresa',
+					'cliente__nombre'
+				)
+			
+		else:
+
+			# si no, trae solo los que ese usuario tiene designado
+
+			lista_cliente = Lista_cliente.objects.filter(
+					estado = 1,
+					lista = id_lista,
+					user_id = request.user.id
+				).order_by(
+					'cliente__empresa',
+					'cliente__nombre'
+				)
+
 	else:
 		lista_cliente = ""
 	
