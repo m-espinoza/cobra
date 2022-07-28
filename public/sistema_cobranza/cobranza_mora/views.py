@@ -23,13 +23,18 @@ class IndexView(generic.ListView):
 		los clientes que solo el usuario logueado puede ver
 		
 		"""
+		if self.request.user.is_superuser:
+			
+			return Lista.objects.all().order_by('fecha_creado').distinct()
+		
+		else:
 
-		return Lista.objects.filter(
-				fecha_inicio__lte = date.today(),
-				fecha_vencimiento__gte = date.today(),
-				lista_cliente__estado_id = 1,
-				lista_cliente__user_id = self.request.user.id
-			).order_by('fecha_creado').distinct()
+			return Lista.objects.filter(
+					fecha_inicio__lte = date.today(),
+					fecha_vencimiento__gte = date.today(),
+					lista_cliente__estado_id = 1,
+					lista_cliente__user_id = self.request.user.id
+				).order_by('fecha_creado').distinct()
 
 
 
@@ -63,27 +68,35 @@ def lista_dinamica_view(request, id_lista):
 
 	template_name = 'cobranza_mora/listas_detalle.html'
 
-	lista_elegida = Lista.objects.filter(
+	lista_elegida = ""
+	lista_cliente = ""
+
+	if request.user.is_superuser:
+
+		lista_elegida = Lista.objects.filter(
 				pk = id_lista,
-				fecha_inicio__lte = date.today(),
-				fecha_vencimiento__gte = date.today(),
 			)
 
-	if lista_elegida:
+		if lista_elegida:
 
-		if request.user.is_superuser:
-
-			# Si es superuser trae la lista completa, sin tener en cuenta el usuario responsable
+			# Si es superuser trae la lista completa
 
 			lista_cliente = Lista_cliente.objects.filter(
-					estado = 1,
 					lista = id_lista,
 				).order_by(
 					'cliente__empresa',
 					'cliente__nombre'
 				)
-			
-		else:
+
+	else:
+
+		lista_elegida = Lista.objects.filter(
+				pk = id_lista,
+				fecha_inicio__lte = date.today(),
+				fecha_vencimiento__gte = date.today(),
+			)
+
+		if lista_elegida:
 
 			# si no, trae solo los que ese usuario tiene designado
 
@@ -95,9 +108,6 @@ def lista_dinamica_view(request, id_lista):
 					'cliente__empresa',
 					'cliente__nombre'
 				)
-
-	else:
-		lista_cliente = ""
 	
 
 	context = {

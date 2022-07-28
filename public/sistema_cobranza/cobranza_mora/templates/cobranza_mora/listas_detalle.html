@@ -144,6 +144,12 @@
 							Responsable: ${data_cliente['evento'][key]['user__username']}</p>
 						</div>`;
 
+						if(data_cliente['evento'][key]['mensaje'] == null){
+							mensaje = "";
+						}else{
+							mensaje = data_cliente['evento'][key]['mensaje'];
+						}
+
 						datos_evento += `
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="headingOne">
@@ -157,7 +163,7 @@
 						<div id="id_${data_cliente['evento'][key]['id']}" class="accordion-collapse collapse" aria-labelledby="headingOne" style="">
 							<div class="accordion-body">
 								<strong>${data_cliente['evento'][key]['evento_respuesta__evento_respuesta']}</strong><br>
-								${data_cliente['evento'][key]['mensaje']}
+								${mensaje}
 							</div>
 						</div>`;
 
