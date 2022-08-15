@@ -4,6 +4,7 @@ services:
 
   web:
     build: ./docker/cobra_system
+    container_name: web
     env_file:
       - ./.env
     restart: always 
@@ -13,8 +14,10 @@ services:
     depends_on:
       - db
     networks:
-      - red-interna
-    
+      - red-interna    
+    labels:
+      - "traefik.enable=false"    
+
 
   db:
     env_file:
@@ -32,24 +35,36 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - red-interna
+    labels:
+      - "traefik.enable=false"
 
 
   server:
-    build: ./docker/nginx
-    ports:
-      - 80:80
-    restart: always 
+    image: nginx:${NGINX_VERSION}
+    container_name: server
+    restart: always
+    environment:
+      - TZ=${TZ}
+    expose:
+      - ${NGINX_PORT}
     volumes:
       - ./public/sistema_cobranza/staticfiles:/home/sistema_cobranza/staticfiles
+      - ./docker/nginx/error.log:/var/log/nginx/error.log
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
+      - db
     networks:
       - red-interna
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.server.rule=Host(`${SUBDOMAIN}.${DOMAIN}`) 
+      - traefik.http.routers.server.entrypoints=websecure
+      - traefik.http.routers.server.tls=true
+      - traefik.http.routers.server.tls.certresolver=myresolver     
+      - traefik.docker.network=${TRAEFIK_DOCKER_NETWORK}
 
-
-networks:
-    red-interna:
-        driver: bridge
 
 volumes:
   db-data:
